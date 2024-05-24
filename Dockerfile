@@ -17,4 +17,4 @@ WORKDIR $HOME/app
 
 COPY --chown=user . $HOME/app
 
-RUN start.sh
+RUN /bin/start.sh
