@@ -13,6 +13,9 @@ client = OpenAI(
 )
 
 def textprocessing(file_path):
+    """
+    Takes a document and parses it to seperate normal text from tables. \n
+    Returns a tuple of text(List) and table(List)"""
     doc = docx.Document(file_path)
     text = []
     tables = []
@@ -33,6 +36,9 @@ def textprocessing(file_path):
     return text, tables
 
 def embed_query(docs):
+    """
+    Takes a document and returns vector embeddings for it.
+    """
     embds = []
     for text in docs:
         response = client.embeddings.create(input=text, model="text-embedding-ada-002")
@@ -40,6 +46,9 @@ def embed_query(docs):
     return embds
 
 def setvecdb(text_embds, table_embds, text, tables):
+    """
+    Takes embeddings and normal documents for both tables and texts and makes a simplified collection out of it \n
+    Returns a Pandas Dataframe with the document content, type of document, and embedding as columns"""
     data = []
     
     for idx, embedding in enumerate(text_embds):
@@ -52,6 +61,9 @@ def setvecdb(text_embds, table_embds, text, tables):
     return vectordb
 
 def retriever(vectordb, query_text):
+    """
+    Takes a Pandas Dataframe as the vector database and a question(string) \n
+    Compares cosine similarity between the vectorised question and embeddings in the dataframe, returns the top 4 text/tabular data contents ordered by the similiarity as a DataFrame"""
     qembed = client.embeddings.create(input=query_text, model="text-embedding-ada-002")
     query_embedding = np.array(qembed.data[0].embedding).reshape(1, -1)
     
@@ -68,6 +80,9 @@ Don't simply rely on direct logic for questions and use complex reasoning often 
 Explain your purpose if asked, make sure you are helpful"""
 
 def generate_answer(question,ctxt):
+    """
+    Takes two strings : the user's question and the context retrieved \n
+    LLM generates appropiate answer and returns a string"""
     response =  client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
         messages = [

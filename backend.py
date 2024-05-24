@@ -14,6 +14,10 @@ from utils import *
 
 @app.post("/uploaddoc")
 async def upload_document(file: UploadFile = File()):
+    """
+    Endpoint for handling document upload. \n
+    Takes document from frontend, gets a vector database in the form of a Pandas Dataframe and finalises it. \n
+    Returns a JSON with the key 'message'"""
     content = await file.read()
     file = BytesIO(content)
     
@@ -29,6 +33,9 @@ async def upload_document(file: UploadFile = File()):
 
 @app.post("/question")
 async def processquestion(question: Q):
+    """
+    Endpoint for processing question generation of answer. \n
+    Returns a JSON with the key 'answer'"""
     query_text = question.question
     vectordb = document_data.get("vectordb")
     if vectordb is None:
