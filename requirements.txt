@@ -5,3 +5,4 @@ pandas
 pydantic
 python-docx
 numpy
+uvicorn
