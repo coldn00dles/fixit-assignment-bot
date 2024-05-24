@@ -1,16 +1,17 @@
 # Document-based QA Chatbot
-
+Allows you to chat with your documents with the top-notch LLM, GPT-3.5
 ## Local Setup
 
 1) Clone the repository <br>
 `git clone https://github.com/coldn00dles/fixit-assignment-bot.git`
 
 2) Run `pip install -r requirements.txt`
-3) Run`bash script.sh` <br>
+3) A `.env` file would be required for the OpenAI API key. Follow `env-example` for the same
+4) Run`bash script.sh` <br>
     Alternatively, run: <br>
     `uvicorn backend:app --host 0.0.0.0 --port 7860 --reload` <br>
     `streamlit run app.py`
-4) The app should be available at `localhost:8051`
+5) The app should be available at `localhost:8051`
 
 ## Repository Structure Breakdown
 
