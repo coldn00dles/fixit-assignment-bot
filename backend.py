@@ -2,7 +2,9 @@ from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 from utils import *
 from io import BytesIO
-
+import aiocron
+import requests 
+import asyncio
 document_data = {}
 
 app = FastAPI()
@@ -18,7 +20,7 @@ async def upload_document(file: UploadFile = File()):
     Endpoint for handling document upload. \n
     
     Args : 
-    file (File) : The file received from frontend
+    file (StarletteUploadFile) : The file received from frontend
     
     Returns : 
     res (dict) : A JSON with appropiate upload status
@@ -58,3 +60,20 @@ async def processquestion(question: Q):
     answer = generate_answer(query_text, context)
     ans = {"answer": answer}
     return ans
+
+@app.get("/uptimeping")
+async def ping():
+    return {"status" : "Pinged!"}
+
+def ping():
+    response = requests.get("http://localhost:7860/uptimeping")
+    if response.status_code == 200:
+        print("Backend is up and running.")
+    else:
+        print("Failed to ping backend.")
+        
+@aiocron.crontab('*/10 * * * *')    #async cron job to avoid inactivity stoppage of service on render
+async def cron_ping():
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, ping)
+        

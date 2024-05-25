@@ -2,13 +2,13 @@ import streamlit as st
 import requests
 
 backend_url = "http://localhost:7860"
-st.header('fiXit Assignment', divider='orange')   #defining titles for page
+st.header('fiXit Assignment', divider='orange')   #title and sub-title
 st.header('Document-based QA Chatbot')
 
 if 'uploadFlag' not in st.session_state:          #checking if document has been uploaded 
-    upload = st.file_uploader("Upload a DOCX file", type="docx")   #if not, upload id prompted
+    upload = st.file_uploader("Upload your document (in DOCX)", type="docx")   #if not, upload id prompted
     if upload:
-        files = {'file': upload.getvalue()}               #contents of the document are sent as BytesIO object
+        files = {'file': upload.getvalue()}               #contents of the document are sent as bytes
         response = requests.post(f"{backend_url}/uploaddoc", files=files)
         if response.status_code == 200:                   #once upload has been finalised and processed by the backend endpoint, the upload flag is set to true
             st.success("Document uploaded sucessfully")
